@@ -84,7 +84,7 @@ int min_cost_flow(int N, vector<Edge> edges, int K, int s, int t) {
 }
 void solve()
 {
-    //refference problem : https://codeforces.com/contest/1437/problem/C 
+    //reference problem : https://codeforces.com/contest/1437/problem/C 
     int n;
     cin>>n;
     vector<int> a(n);
