@@ -40,7 +40,7 @@ T hungarian(const vector<vector<T>>& cost) {
 
 int main()
 {
-    //refference problem : https://codeforces.com/contest/1437/problem/C
+    //reference problem : https://codeforces.com/contest/1437/problem/C
     int q;
     cin>>q;
     while(q--)
