@@ -105,4 +105,4 @@ int32_t main() {
   }
   return 0;
 }
-// https://judge.yosupo.jp/problem/factorize
+//https://www.codechef.com/LTIME102B/problems/STRGMNZ
