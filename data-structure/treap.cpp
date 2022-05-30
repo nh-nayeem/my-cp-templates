@@ -68,7 +68,7 @@ void split(pnod t, int key, pnod & l, pnod & r )
 
 int sz(pnod t){ if(t) return t->size; return 0; }
 
-void split_by_idx(pnod t, int idx, pnod & l, pnod & r)
+void split_by_idx(pnod t, int idx, pnod & l, pnod & r) // when treap is a set and idx is the index of sorted list and key = value
 {
     if(!t) l = r = NULL;
     else if( sz(t->l)+1 <= idx) split_by_idx( t->r, idx-sz(t->l)-1, t->r, r), l=t; 
