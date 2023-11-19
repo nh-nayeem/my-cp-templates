@@ -1,54 +1,58 @@
-struct segtree
-{
-    struct nod
-    {
-        int one,zero,lazy;
-        nod(int one,int zero) : one(one),zero(zero),lazy(-1) { }; //initialize the values
-    };
+template<class T>
+struct segtree {
     int n;
-    vector<nod> tree;
-    segtree(int len)
-    {
-        n=len;
-        tree.resize(4*len,nod(0,0));
+    vector<T> tree;
+    vector<T> lazy;
+    segtree(int len) {
+        tree.resize(4 * len, 0);
+        lazy.resize(4 * len, 0);
+        n = len;
     }
-    nod merge(nod x, nod y)    //........merge two nod of segment tree.....
-    {
-        nod ret(0,0);
-        ret.one+=x.one+y.one;
-        ret.zero+=x.zero+y.zero;
-        return ret;
+    // change combine and push function
+    T combine(T x, T y) {
+        return x + y;
     }
-    void push(int at,int l,int r)   //.........edit push function as lazy behave.....
-    {
-        if(tree[at].lazy==-1) return;
-        if(tree[at].lazy==0) tree[at].zero=(r-l+1),tree[at].one=0;
-        else tree[at].one=(r-l+1),tree[at].zero=0;
-        if(l!=r) tree[at<<1].lazy=tree[at].lazy;
-        if(l!=r) tree[at<<1|1].lazy=tree[at].lazy;
-        tree[at].lazy=-1;
+    void push(int at, int l, int r) {
+        if (lazy[at] == 0) return;
+        tree[at] += lazy[at] * (r - l + 1);
+        if (l != r) lazy[at << 1] += lazy[at];
+        if (l != r) lazy[at << 1 | 1] += lazy[at];
+        lazy[at] = 0;
     }
-    void upd(int at,int l,int r,int L,int R,int val)
-    {
-        push(at,l,r);
-        if(r<L || R<l) return;
-        if(L<=l && r<=R)
-        {
-            tree[at].lazy=val;
+    void build(vector<T> &arr, int at, int l, int r) {
+        if (l == r) {
+            tree[at] = arr[l];
+            return ;
+        }
+        int m = (l + r) >> 1;
+        build(arr, at << 1, l, m);
+        build(arr, at << 1 | 1, m + 1, r);
+        tree[at] = combine(tree[at << 1], tree[at << 1 | 1]);
+    }
+    void Build(vector<T> &arr){ build(arr, 1, 0, n - 1); } // Use this 
+
+    void update(int at, int l, int r, int L, int R, T val) {
+        push(at, l, r);
+        if (r < L || R < l) return;
+        if (L <= l && r <= R) {
+            lazy[at] = val;
             push(at,l,r);
             return;
         }
-        int m=(l+r)>>1;
-        upd(at<<1,l,m,L,R,val);
-        upd(at<<1|1,m+1,r,L,R,val);
-        tree[at]=merge(tree[at<<1],tree[at<<1|1]);
+        int m = (l + r) >> 1;
+        update(at << 1, l, m, L, R, val);
+        update(at << 1 | 1, m + 1, r, L, R, val);
+        tree[at] = combine(tree[at << 1], tree[at << 1 | 1]);
     }
-    nod quer(int at,int l,int r,int L,int R)
-    {
-        push(at,l,r);
-        if(r<L || R<l) return nod(0,0);    //    ............check.......
-        if(L<=l && r<=R) return tree[at];
-        int m=(l+r)>>1;
-        return merge(quer(at<<1,l,m,L,R),quer(at<<1|1,m+1,r,L,R));
+    void Update(int l, int r, T val) { update(1, 0, n - 1, l, r, val); } // Use this
+
+    T query(int at, int l, int r, int L, int R) {
+        push(at, l, r);
+        if (L <= l && r <= R) return tree[at];
+        int m = (l + r) >> 1;
+        if (R <= m) return query(at << 1, l, m, L, R);
+        if (m < L) return query(at << 1 | 1, m + 1, r, L, R); 
+        return combine(query(at << 1, l, m, L, R), query(at << 1 | 1, m + 1, r, L, R));
     }
+    T Query(int l, int r) { return query(1, 0, n - 1, l, r); } // Use this
 };
