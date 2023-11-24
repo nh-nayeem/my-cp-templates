@@ -1,10 +1,15 @@
+/*............bismillahir rahmanir rahim...............*/
+
+// author :  Muhammad Najmul Hasan Nayeem (SUST MATH 17)
+
+#include<bits/stdc++.h>
+using namespace std;
 template<class T>
 struct segtree {
     int n;
     vector<T> tree;
-    segtree(int len) {
+    segtree(int len) : n(len) {
         tree.resize(4 * len, 0);
-        n = len;
     }
     // change combine function
     T combine(T x, T y) {
@@ -22,8 +27,8 @@ struct segtree {
     void update(int at, int l, int r, int p, T val) {
         if (l == r) return void(tree[at] = val); // change the update type
         int m = (l + r) >> 1;
-        if (p <= m) update(at << 1, l, m, p);
-        else update(at << 1 | 1, m + 1, r, p);
+        if (p <= m) update(at << 1, l, m, p, val);
+        else update(at << 1 | 1, m + 1, r, p, val);
         tree[at] = combine(tree[at << 1], tree[at << 1 | 1]);
     }
     void Update(int p, T val) { update(1, 0, n - 1, p, val); } // Use this
@@ -37,3 +42,12 @@ struct segtree {
     }
     T Query(int l, int r) { return query(1, 0, n - 1, l, r); } // Use this
 };
+int32_t main() {
+    vector<int> a = {1, 2, 3, 4, 5};
+    int n = a.size();
+    segtree<int> st(n);
+    st.Build(a);
+    st.Update(2, 5);
+    cout << st.Query(1, 2) << endl;
+    return 0;
+}
