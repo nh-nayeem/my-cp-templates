@@ -5,3 +5,10 @@
     "variants": [
     { "name": "Run", "shell_cmd": "g++ -O2 -std=c++14 \"${file}\" -o \"${file_path}\\\\${file_base_name}\" && \"${file_path}\\\\${file_base_name}\" < input.txt > output.txt" } ]
 }
+{ 
+    "working_dir": "${file_path}", 
+    "selector": "source.c, source.c++",
+    "variants": [
+        { "name": "Run", "shell_cmd": "g++ -static -Wl,--stack=2147483648 -O2 -std=c++20 \"${file}\" -o \"D:/nh_nayeem/cppBuild\" && \"D:/nh_nayeem/cppBuild\" <D:/nh_nayeem/input.txt >D:/nh_nayeem/output.txt" }
+    ]
+}
